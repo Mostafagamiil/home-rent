@@ -5,8 +5,26 @@ import 'package:home_rent/presentation/components/button.dart';
 import 'package:home_rent/presentation/themes/colors.dart';
 import 'package:home_rent/presentation/themes/config.dart';
 
-class ButtonGroup__widget extends StatelessWidget {
-  const ButtonGroup__widget({Key? key}) : super(key: key);
+class ButtonGroup__widget extends StatefulWidget {
+  final Function(String) onCategoryTap;
+
+  const ButtonGroup__widget({Key? key, required this.onCategoryTap})
+      : super(key: key);
+
+  @override
+  _ButtonGroup__widgetState createState() => _ButtonGroup__widgetState();
+}
+
+class _ButtonGroup__widgetState extends State<ButtonGroup__widget> {
+  String _selectedCategory = 'Home';
+
+  void _handleCategoryTap(String category) {
+    setState(() {
+      _selectedCategory = category;
+    });
+    widget.onCategoryTap(category);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -22,40 +40,13 @@ class ButtonGroup__widget extends StatelessWidget {
                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: Row(
                   children: <Widget>[
-                    Accent__Button__Small(
-                      text: 'Home',
-                      leftIconVisibility: false,
-                      rightIconVisibility: false,
-                      onTap: () {},
-                    ),
+                    _buildCategoryButton('Home'),
                     kSizedBoxWidth_8,
-                    Secondary__Button__Small(
-                      text: 'Apartment',
-                      leftIconVisibility: false,
-                      rightIconVisibility: false,
-                      onTap: () {},
-                    ),
+                    _buildCategoryButton('Apartment'),
                     kSizedBoxWidth_8,
-                    Secondary__Button__Small(
-                      text: 'Hotel',
-                      leftIconVisibility: false,
-                      rightIconVisibility: false,
-                      onTap: () {},
-                    ),
+                    _buildCategoryButton('Hotel'),
                     kSizedBoxWidth_8,
-                    Secondary__Button__Small(
-                      text: 'Villa',
-                      leftIconVisibility: false,
-                      rightIconVisibility: false,
-                      onTap: () {},
-                    ),
-                    kSizedBoxWidth_8,
-                    Secondary__Button__Small(
-                      text: 'Cottage',
-                      leftIconVisibility: false,
-                      rightIconVisibility: false,
-                      onTap: () {},
-                    ),
+                    _buildCategoryButton('Villa'),
                   ],
                 ),
               ),
@@ -95,6 +86,19 @@ class ButtonGroup__widget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildCategoryButton(String category) {
+    final bool isSelected = _selectedCategory == category;
+    final Color buttonColor = isSelected ? kButtonAccentColor : Colors.grey;
+
+    return Accent__Button__Small(
+      text: category,
+      leftIconVisibility: false,
+      rightIconVisibility: false,
+      onTap: () => _handleCategoryTap(category),
+      backgroundColor: buttonColor,
     );
   }
 }

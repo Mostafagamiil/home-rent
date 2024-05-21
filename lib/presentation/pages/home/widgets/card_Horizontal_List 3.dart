@@ -6,15 +6,14 @@ import 'package:home_rent/presentation/themes/config.dart';
 import '../../../../data/sources/api_source.dart';
 import '../../../../data/sources/local_source.dart';
 
-class CaerdVerticalList__widget extends StatefulWidget {
-  const CaerdVerticalList__widget({Key? key}) : super(key: key);
+class CardHorizontalList3 extends StatefulWidget {
+  const CardHorizontalList3({Key? key}) : super(key: key);
 
   @override
-  _CaerdVerticalList__widgetState createState() =>
-      _CaerdVerticalList__widgetState();
+  _CardHorizontalList3State createState() => _CardHorizontalList3State();
 }
 
-class _CaerdVerticalList__widgetState extends State<CaerdVerticalList__widget> {
+class _CardHorizontalList3State extends State<CardHorizontalList3> {
   List<CategoryItem> items = [];
   bool isLoading = true;
 
@@ -27,7 +26,7 @@ class _CaerdVerticalList__widgetState extends State<CaerdVerticalList__widget> {
   Future<void> loadItems() async {
     try {
       print("Fetching items...");
-      items = await FirebaseService().fetchCategoryItems('suggets');
+      items = await FirebaseService().fetchCategoryItems('hotels');
       print("Items fetched: ${items.length}");
       setState(() {
         isLoading = false;
@@ -44,7 +43,7 @@ class _CaerdVerticalList__widgetState extends State<CaerdVerticalList__widget> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final cardWidth = screenWidth * 0.9; // Adjust this value as needed
-    final cardHeight = cardWidth * 0.45; // Adjust this value as needed
+    final cardHeight = cardWidth * 0.75; // Adjust this value as needed
 
     if (isLoading) {
       return const Center(
@@ -61,10 +60,9 @@ class _CaerdVerticalList__widgetState extends State<CaerdVerticalList__widget> {
         child: Column(
           children: items
               .map((item) => GestureDetector(
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ScreenDetails(item: item),
-                    )),
-                    child: Container(
+onTap: () => Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) => ScreenDetails(item: item),
+  )),                    child: Container(
                       width: cardWidth,
                       height: cardHeight,
                       margin: const EdgeInsets.all(8.0),
@@ -106,13 +104,13 @@ class _CaerdVerticalList__widgetState extends State<CaerdVerticalList__widget> {
                                   color: Colors.white, fontSize: 12),
                             ),
                           ),
-                          Positioned(
+                                                    Positioned(
                             top: 10,
                             right: 10,
                             child: Text(
                               "${item.price} EGP",
                               style: const TextStyle(
-                                  color: Colors.white, fontSize: 14),
+                                  color: Colors.white, fontSize: 20),
                             ),
                           ),
                         ],

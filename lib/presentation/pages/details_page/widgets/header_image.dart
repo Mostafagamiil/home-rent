@@ -1,15 +1,26 @@
-import 'package:flutter/material.dart';
-import 'package:home_rent/core/utils/navigator.dart';
+// ignore_for_file: prefer_typing_uninitialized_variables
 
-import '../../../../gen/assets.gen.dart';
-import '../../../components/text.dart';
-import '../../../themes/colors.dart';
-import 'package:home_rent/presentation/themes/config.dart';
+import 'package:flutter/material.dart';
+import 'package:home_rent/gen/assets.gen.dart';
+import 'package:home_rent/presentation/components/text.dart';
+import 'package:home_rent/presentation/themes/colors.dart';
+
+import '../../../themes/config_files/values.dart';
 
 const double _stackPadding = 20.0;
 
+// ignore: camel_case_types
 class HeaderImage__widget extends StatelessWidget {
-  const HeaderImage__widget({Key? key}) : super(key: key);
+  final String imageUrl; // URL for the image
+  final String title; // Title to display
+  final String description; // Description to display
+
+  const HeaderImage__widget(
+      {Key? key,
+      required this.imageUrl,
+      required this.title,
+      required this.description})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +33,7 @@ class HeaderImage__widget extends StatelessWidget {
               color: kColorText3,
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage(Assets.images.house1.path)),
+                  fit: BoxFit.cover, image: NetworkImage(imageUrl)),
             ),
           ),
         ),
@@ -48,7 +58,7 @@ class HeaderImage__widget extends StatelessWidget {
           top: _stackPadding,
           left: _stackPadding,
           child: GestureDetector(
-            onTap: () => PageNav().pop(context),
+            onTap: () => Navigator.of(context).pop(),
             child: RoundIconButton__widget(
               icon: Assets.icons.back.svg,
             ),
@@ -69,12 +79,10 @@ class HeaderImage__widget extends StatelessWidget {
           bottom: _stackPadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const <Widget>[
-              TitleLarge__text(text: 'Dreamsville House', color: kColorWhite),
+            children: <Widget>[
+              TitleLarge__text(text: title, color: kColorWhite),
               kSizedBoxHeight_8,
-              BodySmall__text(
-                  text: 'Jl. Sultan Iskandar Muda, Jakarta selatan',
-                  color: kColorText3),
+              BodySmall__text(text: description, color: kColorText3),
               kSizedBoxHeight_16,
               BedAndBathSection()
             ],
@@ -150,11 +158,14 @@ class SquareIconButton__widget extends StatelessWidget {
     required this.icon,
     this.iconColor,
     this.bgColor,
+    this.onTap,
   }) : super(key: key);
 
+  // ignore: prefer_typing_uninitialized_variables
   final icon;
   final iconColor;
   final bgColor;
+  final VoidCallback? onTap;
 
   static const double _size = 28.0;
 
@@ -170,6 +181,35 @@ class SquareIconButton__widget extends StatelessWidget {
       ),
       child: Center(
         child: icon(height: 24.0, width: 24.0, color: iconColor ?? kColorWhite),
+      ),
+    );
+  }
+}
+class SquareIconButton2__widget extends StatelessWidget {
+  final Widget icon;
+  final Color bgColor;
+  final VoidCallback onTap; // This needs to be defined to handle taps
+
+  const SquareIconButton2__widget({
+    Key? key,
+    required this.icon,
+    required this.bgColor,
+    required this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell( // Use InkWell to handle taps
+      onTap: onTap,
+      child: Container(
+        width: 40, // Or any other suitable size
+        height: 40,
+        decoration: BoxDecoration(
+          color: bgColor,
+          shape: BoxShape.rectangle,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Center(child: icon),
       ),
     );
   }

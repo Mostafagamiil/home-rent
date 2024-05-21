@@ -3,12 +3,17 @@ import 'package:home_rent/gen/assets.gen.dart';
 import 'package:home_rent/presentation/components/text.dart';
 import 'package:home_rent/presentation/pages/details_page/widgets/header_image.dart';
 import 'package:home_rent/presentation/themes/colors.dart';
-import 'package:home_rent/presentation/themes/config.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../../../data/sources/local_source.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class UserProfile__widget extends StatelessWidget {
-  const UserProfile__widget({Key? key}) : super(key: key);
+  final CategoryItem item;
 
-  static const double _avatarSize = 40.0;
+  const UserProfile__widget({
+    Key? key,
+    required this.item,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,35 +21,73 @@ class UserProfile__widget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Container(
-          height: _avatarSize,
-          width: _avatarSize,
+          height: 40.0,
+          width: 40.0,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: kColorText3,
-            image:
-                DecorationImage(image: AssetImage(Assets.images.avatar.path)),
+            image: DecorationImage(
+              image: AssetImage(Assets.images.avatar.path),
+            ),
           ),
         ),
-        kSizedBoxWidth_16,
+        const SizedBox(width: 16),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            LabelMedium__text(text: 'Garry Allen'),
-            SizedBox(height: 4),
-            BodySmall__text(text: 'Owner'),
+            LabelMedium__text(
+                text:
+                    'Mohamed Shams'), // Example name, replace with actual data if available
+            const SizedBox(height: 4),
+            BodySmall__text(
+                text:
+                    'Owner'), // Example title, replace with actual data if available
           ],
         ),
         const Spacer(),
-        SquareIconButton__widget(
-          icon: Assets.icons.phone.svg,
-          bgColor: kColorAccent.withOpacity(0.5),
+        IconButton(
+          icon: Icon(Icons.phone, color: kColorAccent),
+          onPressed: () => _launchPhone(item.phone),
         ),
-        kSizedBoxWidth_16,
-        SquareIconButton__widget(
-          icon: Assets.icons.chat.svg,
-          bgColor: kColorAccent.withOpacity(0.5),
-        ),
+        const SizedBox(width: 16),
       ],
     );
   }
+
+void _checkAndRequestPermission() async {
+    var status = await Permission.phone.status;
+    if (!status.isGranted) {
+        print("Requesting permission...");
+        final result = await Permission.phone.request();
+        if (result.isGranted) {
+            print("Permission granted. Attempting to launch dialer...");
+            _launchPhone(item.phone);
+        } else {
+            print("Permission denied");
+        }
+    } else {
+        print("Permission already granted. Launching dialer...");
+        _launchPhone(item.phone);
+    }
+}
+
+void _launchPhone(String number) async {
+    final Uri url = Uri.parse('tel:$number');
+    if (await canLaunchUrl(url)) {
+        print('URL is launchable, attempting...');
+        bool launched = await launchUrl(url);
+        print('Launch status: $launched');
+    } else {
+        print('URL cannot be launched');
+    }
+}
+_calling() async {
+  const url = 'tel:+20 115 595 3690';
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
 }

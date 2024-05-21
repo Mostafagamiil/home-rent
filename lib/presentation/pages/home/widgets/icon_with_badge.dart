@@ -23,8 +23,10 @@ class IconWithBadge__widget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        
         iconAsset(height: iconSize, width: iconSize),
         Visibility(
+          
           visible: badgeVisibility,
           child: const Positioned(
             right: 2,

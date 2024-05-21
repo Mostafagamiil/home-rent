@@ -5,7 +5,7 @@ const kColorBlack = Color(0xff000000);
 
 const kColorPrimary = Color(0xff06113C);
 const kColorSecondary = Color(0xffF7F7F7);
-const kColorAccent = Color(0xffFF8C32);
+const kColorAccent = Color(0xff8BC83F);
 
 const kColorText1 = kColorPrimary;
 const kColorText2 = Color(0xff858585);

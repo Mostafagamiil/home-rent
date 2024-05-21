@@ -1,47 +1,136 @@
+// ignore_for_file: camel_case_types
+
 import 'package:flutter/material.dart';
 import 'package:home_rent/core/utils/navigator.dart';
 import 'package:home_rent/gen/assets.gen.dart';
 import 'package:home_rent/presentation/components/text.dart';
-import 'package:home_rent/presentation/pages/details_page/view/details.dart';
+import 'package:home_rent/presentation/pages/details_page/view/details1.dart';
 import 'package:home_rent/presentation/themes/colors.dart';
 import 'package:home_rent/presentation/themes/config.dart';
+import '../../../../data/sources/api_source.dart';
+import '../../../../data/sources/local_source.dart';
 
-class CardHorizontalList__widget extends StatelessWidget {
+class CardHorizontalList__widget extends StatefulWidget {
   const CardHorizontalList__widget({Key? key}) : super(key: key);
+
+  @override
+  _CardHorizontalList__widgetState createState() =>
+      _CardHorizontalList__widgetState();
+}
+
+class _CardHorizontalList__widgetState
+    extends State<CardHorizontalList__widget> {
+  List<CategoryItem> items = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadItems();
+  }
+
+  Future<void> loadItems() async {
+    try {
+      print("Fetching items...");
+      items = await FirebaseService().fetchCategoryItems('apartments');
+      print("Items fetched: ${items.length}");
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Error fetching items: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final cardWidth = screenWidth * 0.6; // Adjust this value as needed
+    final cardHeight = cardWidth * 0.75; // Adjust this value as needed
+
+    if (isLoading) {
+      return const Center(
+          child: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(kButtonAccentColor),
+      ));
+    }
+
     return ScrollConfiguration(
       behavior: const ScrollBehavior(),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         child: Row(
-          children: [
-            CardListItem(
-              ontap: () => PageNav().push(context, const ScreenDetails()),
-              distance: '1.8 km',
-              title: 'Dreamsville House',
-              description: 'Jl. Sultan Iskandar Muda',
-              image: Assets.images.house1.path,
-            ),
-            kSizedBoxWidth_16,
-            CardListItem(
-              ontap: () {},
-              distance: '3.0 km',
-              title: 'Ascot House',
-              description: 'Jl. Cilandak Tengah',
-              image: Assets.images.house2.path,
-            ),
-          ],
+          children: items
+              .map((item) => GestureDetector(
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ScreenDetails(item: item),
+                    )),
+                    child: Container(
+                      width: cardWidth,
+                      height: cardHeight,
+                      margin: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(item.image),
+                          fit: BoxFit.cover,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            bottom: 10,
+                            left: 10,
+                            child: Text(
+                              item.title,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 30,
+                            left: 10,
+                            child: Text(
+                              item.description,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 12),
+                            ),
+                          ),
+                          Positioned(
+                            top: 10,
+                            left: 10,
+                            child: Text(
+                              item.distance,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 12),
+                            ),
+                          ),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: Text(
+                              "${item.price} EGP",
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 12),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ))
+              .toList(),
         ),
       ),
     );
   }
 }
 
-///
-///
-///
 class DistanceChips extends StatelessWidget {
   const DistanceChips({
     Key? key,

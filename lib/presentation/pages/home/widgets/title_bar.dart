@@ -23,13 +23,6 @@ class TitleBar__widget extends StatelessWidget {
         children: <Widget>[
           LabelSmall__text(text: title),
           const Spacer(),
-          GestureDetector(
-            onTap: ontap,
-            child: Visibility(
-                visible: visibility,
-                child: const BodySmall__text(
-                    text: 'See more', color: kColorText2)),
-          ),
         ],
       ),
     );

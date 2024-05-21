@@ -6,15 +6,14 @@ import 'package:home_rent/presentation/themes/config.dart';
 import '../../../../data/sources/api_source.dart';
 import '../../../../data/sources/local_source.dart';
 
-class CaerdVerticalList__widget extends StatefulWidget {
-  const CaerdVerticalList__widget({Key? key}) : super(key: key);
+class CardHorizontalList2 extends StatefulWidget {
+  const CardHorizontalList2({Key? key}) : super(key: key);
 
   @override
-  _CaerdVerticalList__widgetState createState() =>
-      _CaerdVerticalList__widgetState();
+  _CardHorizontalList2State createState() => _CardHorizontalList2State();
 }
 
-class _CaerdVerticalList__widgetState extends State<CaerdVerticalList__widget> {
+class _CardHorizontalList2State extends State<CardHorizontalList2> {
   List<CategoryItem> items = [];
   bool isLoading = true;
 
@@ -27,7 +26,7 @@ class _CaerdVerticalList__widgetState extends State<CaerdVerticalList__widget> {
   Future<void> loadItems() async {
     try {
       print("Fetching items...");
-      items = await FirebaseService().fetchCategoryItems('suggets');
+      items = await FirebaseService().fetchCategoryItems('apartments');
       print("Items fetched: ${items.length}");
       setState(() {
         isLoading = false;
@@ -44,7 +43,7 @@ class _CaerdVerticalList__widgetState extends State<CaerdVerticalList__widget> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final cardWidth = screenWidth * 0.9; // Adjust this value as needed
-    final cardHeight = cardWidth * 0.45; // Adjust this value as needed
+    final cardHeight = cardWidth * 0.75; // Adjust this value as needed
 
     if (isLoading) {
       return const Center(
@@ -112,7 +111,7 @@ class _CaerdVerticalList__widgetState extends State<CaerdVerticalList__widget> {
                             child: Text(
                               "${item.price} EGP",
                               style: const TextStyle(
-                                  color: Colors.white, fontSize: 14),
+                                  color: Colors.white, fontSize: 20),
                             ),
                           ),
                         ],
