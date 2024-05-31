@@ -39,7 +39,6 @@ class _ScreenHomeState extends State<ScreenHome> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SearchAndFilter(),
               ButtonGroup__widget(onCategoryTap: _onCategoryTap),
               kSizedBoxHeight_8,
               TitleBar__widget(

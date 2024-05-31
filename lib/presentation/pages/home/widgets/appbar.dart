@@ -35,7 +35,9 @@ PreferredSize appbar__widget() {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const TitleLarge__text(text: 'Aswan' ,),
+                      const TitleLarge__text(
+                        text: 'Aswan',
+                      ),
                       kSizedBoxWidth_8,
                       Assets.icons.arrowDown.svg(),
                     ],
@@ -43,10 +45,6 @@ PreferredSize appbar__widget() {
                 ],
               ),
               const Spacer(),
-              IconWithBadge__widget(
-                badgeVisibility: true,
-                iconAsset: Assets.icons.notification.svg,
-              ),
             ],
           ),
         )),
