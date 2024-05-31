@@ -54,39 +54,42 @@ class ScreenDetails extends StatelessWidget {
     );
   }
 
-  Widget buildPriceAndRentButton(BuildContext context, CategoryItem item) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-      decoration: BoxDecoration(
-        color: kColorWhite,
-        gradient: LinearGradient(
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          colors: [kColorWhite, kColorWhite.withOpacity(0.0)],
+Widget buildPriceAndRentButton(BuildContext context, CategoryItem item) {
+  return Container(
+    padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+    decoration: BoxDecoration(
+      color: kColorWhite,
+      gradient: LinearGradient(
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+        colors: [kColorWhite, kColorWhite.withOpacity(0.0)],
+      ),
+    ),
+    child: Row(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const BodyMedium__text(text: 'Price', color: kColorText2),
+            SizedBox(height: 8),
+            LabelMedium__text(text: 'EGP ${item.price} / Year'),
+          ],
         ),
-      ),
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const BodyMedium__text(text: 'Price', color: kColorText2),
-              SizedBox(height: 8),
-              LabelMedium__text(text: 'EGP ${item.price} / Year'),
-            ],
-          ),
-          Spacer(),
-          Accent__Button__Medium(
-            text: 'Rent Now',
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => PaymentDetailScreen()),
+        Spacer(),
+        Accent__Button__Medium(
+          text: 'Rent Now',
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PaymentScreen(item: item),
             ),
-            leftIconVisibility: false,
-            rightIconVisibility: false,
           ),
-        ],
-      ),
-    );
-  }
+          leftIconVisibility: false,
+          rightIconVisibility: false,
+        ),
+      ],
+    ),
+  );
+}
+
 }

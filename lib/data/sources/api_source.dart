@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'local_source.dart';
 
 class FirebaseService {
@@ -45,5 +44,19 @@ class FirebaseService {
     allItems.shuffle(); // Randomize the list
     return allItems;
   }
-}
 
+ Future<void> savePaymentDetails(String userId, String title, String cardNumber, String expiryDate, String cvv, String amount) async {
+    DocumentReference docRef = _db.collection('payments').doc();
+
+    await docRef.set({
+      'userId': userId,
+      'title': title,
+      'cardNumber': cardNumber,
+      'expiryDate': expiryDate,
+      'cvv': cvv,
+      'amount': amount,
+      'documentId': docRef.id, // Save the document ID
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+  }
+}
